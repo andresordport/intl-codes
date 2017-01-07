@@ -7,10 +7,12 @@
     hola desde twig-intl!!<br>
    Son las:
     {{ "now"|date("d/m/Y H:i:s") }} en Valladolid
-    <br>En Rio de Janeiro:
-    {{ "now"|date("m/d/Y") | localizeddate('none', 'none', 'pt_BR', null, "cccc, d MMMM Y 'às' hh:mm aaa") }}
-    <br>En Madrid:
-    {{ "now"|date("m/d/Y") | localizeddate('medium', 'none', 'es_ES', null, "cccc, d MMMM Y hh:mm aaa") }}
+    <br>En brasileño:
+    {{ "now"|date("m/d/Y") | localizeddate('none', 'none', 'pt_BR', null, "cccc, d MMMM Y") }}
+    <br>En español:
+    {{ "now"|date("m/d/Y") | localizeddate('medium', 'none', 'es_ES', null, "cccc, d MMMM Y") }}
+    <br>En ingles:
+    {{ "now"|date("m/d/Y") | localizeddate('medium', 'none', 'en_UK', null, "cccc, d MMMM Y") }}
     <br>{{ "now"|date("m/d/Y") |localizeddate("medium", "none", 'es_ES') }}
     <br>{{ 200.35|number_format(2) }}
     <br>{{ 200.35|localizedcurrency('EUR') }}
