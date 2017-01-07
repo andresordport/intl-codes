@@ -1,0 +1,46 @@
+Install the PHP intl extension
+
+First of all, you will need the PHP intl extension, as the Twig extension is built on top of that. The Twig Intl extension will throw an Exception if the PHP intl extension is not enabled. Installation instructions can be found in the official PHP documentation.
+
+On Ubuntu/Debian machines, this is as easy as running the following command:
+
+sudo apt-get install php5-intl
+On Windows machines, you probably have to uncomment the following line in php.ini:
+
+extension=php_intl.dll
+...and then restart the web server.
+
+Install the Twig Extensions
+
+Next, you will need the Twig Extensions package (that contains the Intl extension, amongst others) which can be installed using Composer. Run this command in the command line:
+
+composer require twig/extensions ~1.2
+This will add the dependency to your composer.json and download it.
+
+Note: the localizednumber and localizedcurrency filters were introduced in version 1.2.0, so you need at least that version if you want to use them.
+
+Adding the extension to Twig
+
+If you are using Twig in a simple PHP project, you can add the extension using the addExtension() method.
+
+$twig = new Twig_Environment($loader);
+$twig->addExtension(new Twig_Extensions_Extension_Intl());
+Adding the extension to Twig (in Symfony)
+
+If you are using a Symfony application, you can add the extension to Twig using the service configuration:
+
+services:
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+Setting the locale
+
+Locale::setDefault('nl-NL');
+Setting the locale in Symfony
+
+Edit app/config/parameters.yml:
+
+parameters:
+    locale: nl
+(this parameter is used in config.yml, in the framework: default_locale setting)
