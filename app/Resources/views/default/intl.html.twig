@@ -12,4 +12,6 @@
     <br>En Madrid:
     {{ "now"|date("m/d/Y") | localizeddate('medium', 'none', 'es_ES', null, "cccc, d MMMM Y hh:mm aaa") }}
     <br>{{ "now"|date("m/d/Y") |localizeddate("medium", "none", 'es_ES') }}
+    <br>{{ 200.35|number_format(2) }}
+    <br>{{ 200.35|localizedcurrency('EUR') }}
 {% endblock %}

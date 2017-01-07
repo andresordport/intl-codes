@@ -6,7 +6,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Intl\DateFormatter\IntlDateFormatter;
 
@@ -41,35 +40,12 @@ class IndexController extends Controller
      */
     public function intlAction(Request $request)
     {
-        /*
-       \Locale::setDefault('en');
-        $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
-
-        $currency = Intl::getCurrencyBundle()->getCurrencyName('INR');
-
-        $symbol = Intl::getCurrencyBundle()->getCurrencySymbol('INR');
-
-        $fractionDigits = Intl::getCurrencyBundle()->getFractionDigits('INR');
-
-        $roundingIncrement = Intl::getCurrencyBundle()->getRoundingIncrement('INR');
-        */
-        /**
-         * Con los numeros no lo consigo, xro con las fechas si
-         */
-//        echo("Y para numeros:<br>");
-//        echo("En español 1234,567 son: <br>");
-//        echo("En en_US:<br>");
-//        $formatter = new NumberFormatter('en_US', NumberFormatter::DECIMAL);
-//        echo $formatter->format(1234.567);
-//        echo("En de_DE:<br>");
-//        $formatter = new NumberFormatter('de_DE', NumberFormatter::CURRENCY);
-//        echo $formatter->getTextAttribute(NumberFormatter::CURRENCY_CODE);
-//        echo("En es_ES:<br>");
-//        $formatter = new NumberFormatter('es_ES', NumberFormatter::CURRENCY);
-//        echo $formatter->getTextAttribute(NumberFormatter::CURRENCY_CODE);
-//        echo("En ja_JP:<br>");
-//        $formatter = new NumberFormatter('ja_JP', NumberFormatter::CURRENCY);
-//        echo $formatter->getTextAttribute(NumberFormatter::CURRENCY_CODE);
+        echo("En es_ES:<br>");
+        $a = new \NumberFormatter("es_ES", \NumberFormatter::DECIMAL);
+        echo $a->format(12345.12345) . "<br>"; // outputs 12.345,12
+        echo("En ja_JP:<br>");
+        $a = new \NumberFormatter("ja_JP", \NumberFormatter::DECIMAL);
+        echo $a->format(12345.12345) . "<br>"; // outputs 12.345,12
         // replace this example code with whatever you need
         return $this->render('default/intl.html.twig');
     }
