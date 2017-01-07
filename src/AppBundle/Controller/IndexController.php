@@ -44,9 +44,10 @@ class IndexController extends Controller
         $a = new \NumberFormatter("es_ES", \NumberFormatter::DECIMAL);
         echo $a->format(12345.12345) . "<br>"; // outputs 12.345,12
         echo("En ja_JP:<br>");
-        $a = new \NumberFormatter("ja_JP", \NumberFormatter::DECIMAL);
-        echo $a->format(12345.12345) . "<br>"; // outputs 12.345,12
+        $b = new \NumberFormatter("ja_JP", \NumberFormatter::DECIMAL);
+        echo $b->format(12345.12345) . "<br>"; // outputs 12.345,12
+        $numero = $a->format(12345.12345);
         // replace this example code with whatever you need
-        return $this->render('default/intl.html.twig');
+        return $this->render('default/intl.html.twig',["numero" => $numero]);
     }
 }
