@@ -14,3 +14,6 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+    PrimitivaService:
+        class: AppBundle\Service\PrimitivaService
+        arguments: ["@doctrine.orm.entity_manager"]

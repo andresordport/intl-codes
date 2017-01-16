@@ -46,6 +46,17 @@ class IndexController extends Controller
         echo $b->format(12345.12345) . "<br>"; // outputs 12.345,12
         $numero = $a->format(12345.12345);
         // replace this example code with whatever you need
-        return $this->render('default/intl.html.twig',["numero" => $numero]);
+        return $this->render('default/intl.html.twig', ["numero" => $numero]);
     }
+
+    /**
+     * @Route("/loteria", name="loteria")
+     */
+    public function loteriaAction(Request $request)
+    {
+        $service = $this->container->get('PrimitivaService');
+        $numeros = $service->primitivaService();
+        return $this->render('default/loteria.html.twig', ["numeros" => $numeros]);
+    }
+
 }
