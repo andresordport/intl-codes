@@ -15,6 +15,7 @@ Install the Twig Extensions
 Next, you will need the Twig Extensions package (that contains the Intl extension, amongst others) which can be installed using Composer. Run this command in the command line:
 
 composer require twig/extensions ~1.2
+composer require symfony/intl ~2.3
 This will add the dependency to your composer.json and download it.
 
 Note: the localizednumber and localizedcurrency filters were introduced in version 1.2.0, so you need at least that version if you want to use them.
