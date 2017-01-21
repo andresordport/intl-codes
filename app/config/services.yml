@@ -17,3 +17,6 @@ services:
     PrimitivaService:
         class: AppBundle\Service\PrimitivaService
         arguments: ["@doctrine.orm.entity_manager"]
+    EuromillonesService:
+        class: AppBundle\Service\EuromillonesService
+        arguments: ["@doctrine.orm.entity_manager"]

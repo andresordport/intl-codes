@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#{{ dump(numeros) }}#}
+    <div class="row">
+        <div class="circle">{{ numeros[0][0] }} {{ numeros[0][1] }}</div>
+        <div class="bola">{{ numeros[0][2] }}</div>
+        <div class="bola">{{ numeros[0][3] }}</div>
+        <div class="bola">{{ numeros[0][4] }}</div>
+        <div class="bola">{{ numeros[0][5] }}</div>
+        <div class="bola">{{ numeros[0][6] }}</div>
+        <div class="circle">Estrellas</div>
+        <div class="bola">{{ numeros[1][0] }}</div>
+        <div class="bola">{{ numeros[1][1] }}</div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .bola {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: black;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            background: #faea5e
+        }
+        .circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: black;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            background: lightgray;
+        }
+    </style>
+    {#height: 100px;#}
+    {#width: 100px;#}
+    {#display: table-cell;#}
+    {#text-align: center;#}
+    {#vertical-align: middle;#}
+    {#border-radius: 50%;#}
+    {#background: yellow;#}
+{% endblock %}
