@@ -15,6 +15,7 @@ use AppBundle\Entity\Euromillones;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class GetEuromillonesCommand extends ContainerAwareCommand
 {
@@ -50,12 +51,17 @@ class GetEuromillonesCommand extends ContainerAwareCommand
         $bolaBD->setBola3($nodeValues[4]);
         $bolaBD->setBola4($nodeValues[5]);
         $bolaBD->setBola5($nodeValues[6]);
+        $date = date("Y-m-d", strtotime('-1 day'));
+        $bolaBD->setCreatedAt(new \DateTime($date));
         $nodeValues2 = $crawler->filter('.cuerpoRegionDerecha li')->each(function (Crawler $node) {
             return $node->text();
         });
         $bolaBD->setEstrella1($nodeValues2[0]);
         $bolaBD->setEstrella2($nodeValues2[1]);
-        $this->em->persist($bolaBD);
-        $this->em->flush();
+        try {
+            $this->em->persist($bolaBD);
+            $this->em->flush();
+        } catch (UniqueConstraintViolationException $e) {
+        }
     }
 }

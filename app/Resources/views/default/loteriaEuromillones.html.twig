@@ -2,6 +2,13 @@
 
 {% block body %}
     {#{{ dump(numeros) }}#}
+    {% if numeros[2] is defined %}
+        <div class="row">
+            Ya está almacenado el resultado de este día.
+        </div>
+        <hr>
+        <br>
+    {% endif %}
     <div class="row">
         <div class="circle">{{ numeros[0][0] }} {{ numeros[0][1] }}</div>
         <div class="bola">{{ numeros[0][2] }}</div>

@@ -15,6 +15,8 @@ use AppBundle\Entity\Primitiva;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Doctrine\ORM\EntityManager;
+use DateInterval;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class GetPrimitivaCommand extends ContainerAwareCommand
 {
@@ -51,12 +53,17 @@ class GetPrimitivaCommand extends ContainerAwareCommand
         $bolaBD->setBola4($nodeValues[5]);
         $bolaBD->setBola5($nodeValues[6]);
         $bolaBD->setBola6($nodeValues[7]);
+        $date = date("Y-m-d", strtotime('-1 day'));
+        $bolaBD->setCreatedAt(new \DateTime($date));
         $nodeValues2 = $crawler->filter('.cuerpoRegionDerecha span')->each(function (Crawler $node) {
             return $node->text();
         });
         $bolaBD->setComplementario($nodeValues2[0]);
         $bolaBD->setReintegro($nodeValues2[1]);
-        $this->em->persist($bolaBD);
-        $this->em->flush();
+        try {
+            $this->em->persist($bolaBD);
+            $this->em->flush();
+        } catch (UniqueConstraintViolationException $e) {
+        }
     }
 }
