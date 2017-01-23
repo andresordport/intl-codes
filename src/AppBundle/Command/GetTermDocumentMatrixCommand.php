@@ -73,8 +73,12 @@ class GetTermDocumentMatrixCommand extends ContainerAwareCommand
                             }
                         }
                         $arrayData[] = array('value' => $array[0], 'date' => $array[1]);
-                        $arrayData[] = json_encode($arrayData);
+//                        $arrayData[] = json_encode($arrayData);
+                        /** <-- funciona esta y el foreach de abajo */
 //                        var_dump($arrayData);
+//                        foreach ($arrayData as $array) {
+//                            echo($array['value']."\n".$array['date']."\n");
+//                        }
                     }
                 }
                 /** Saltamos lineas de "Docs" y "Terms 1" */
@@ -98,5 +102,13 @@ class GetTermDocumentMatrixCommand extends ContainerAwareCommand
             }
 //            echo(($texto));
         }
+        foreach ($arrayData as $array) {
+//            echo($array['value'] . "\n" . $array['date'] . "\n");
+            $output->writeln(array($array['value']." ".$array['date']));
+//            $output->writeln('');
+//            $output->writeln($array['date']);
+        }
+//        $output->writeln("Only running pre-hooks");
+        return $arrayData;
     }
 }

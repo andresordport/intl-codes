@@ -31,43 +31,34 @@ class TermDocumentMatrixController extends Controller
      */
     public function termDocumentMatrixCronJobAction(Request $request)
     {
-//        $kernel = $this->get('kernel');
-//        $application = new Application($kernel);
-//        $application->setAutoExit(false);
-//
-//        $input = new ArrayInput(array(
-//            'command' => 'app:get-textTermDocumentMatrix'
-//        ));
-////        // You can use NullOutput() if you don't need the output
-//        $output = new BufferedOutput();
-////        $tmpFile = tmpfile();
-////        $output  = new StreamOutput($tmpFile);
-//        $application->run($input, $output);
-////        fseek($tmpFile, 0);
-////        $output = fread($tmpFile, 1024);
-////        fclose($tmpFile);
-//
-//        $content = $output->fetch();
-////        $content = $output;
         $kernel = $this->get('kernel');
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        // The input interface should contain the command name, and whatever arguments the command needs to run
-        $input = new ArrayInput(array("app:get-textTermDocumentMatrix"));
-        $output = new MemoryWriter();
+        $input = new ArrayInput(array(
+            'command' => 'app:get-textTermDocumentMatrix'
+        ));
+//        // You can use NullOutput() if you don't need the output
+        $output = new BufferedOutput();
+        $application->run($input, $output);
 
-        // Run the command
-        $retval = $application->run($input, $output);
-        if(!$retval)
-        {
-            echo "Command executed successfully!\n";
+        $content = $output->fetch();
+        echo("Este es el contenido de 'R command' para la frase: 'este es el texto de prueba para el text mining'");
+        $explodedArray = explode("\n",$content);
+        $keyValArray = array();
+
+        /**
+         * la última posición del array es:
+         * array (size=1)
+         *   0 => string ''
+         *
+         */
+        unset($explodedArray[count($explodedArray)-1]);
+        foreach($explodedArray as $array){
+            $explodedString = explode(" ",$array);
+            $keyValArray[] = array("value" => $explodedString[0], "date" => $explodedString[1]);
         }
-        else
-        {
-            echo "Command was not successful.\n";
-        }
-        var_dump($output->getOutput());
+        $content = json_encode($keyValArray);
 
         return $this->render('default/termDocumentMatrix.html.twig', ["data" => $content]);
 

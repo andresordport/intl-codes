@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ dump(data) }}
+    {#{{ dump(data) }}#}
+    <div class="graficoD3"></div>
 {% endblock %}
 {% block javascripts %}
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script>
         var margin = {top: 20, right: 20, bottom: 70, left: 40},
                 {#width = /*600*/{{ cols*20 }} -margin.left - margin.right,#}
-                width = 600 -margin.left - margin.right,
+                width = 600 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
         // Parse the date / time
         //        var	parseDate = d3.time.format("%Y-%m").parse;
@@ -23,11 +24,7 @@
                 .scale(y)
                 .orient("left")
                 .ticks(10);
-        var svg = d3.select("body2")/*.append("div")
-         .attr("id", function() { return "grafico"; })
-         .attr("width", width/2 + margin.left + margin.right)
-         .attr("height", height +15 + margin.top + margin.bottom)
-         .style("overflow", "auto")*/
+        var svg = d3.select(".graficoD3")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
@@ -35,10 +32,11 @@
                 .append("g")
                 .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
-        data.forEach(function (d) {
-            d.value = +d.value;
-//                d.date = d.date;
-        });
+        var data = {{ data|raw }}
+                data.forEach(function (d) {
+//                    d.value = +d.value;
+//                    d.date = d.date;
+                });
         x.domain(data.map(function (d) {
             return d.value;
         }));
@@ -63,7 +61,7 @@
                 .attr("dy", "-3.71em")
                 .attr("dx", "3em")
                 .style("text-anchor", "end")
-                .text("num. películas");
+                .text("#veces string");
         svg.selectAll("bar")
                 .data(data)
                 .enter().append("rect")
