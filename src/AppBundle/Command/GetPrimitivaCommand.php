@@ -15,7 +15,6 @@ use AppBundle\Entity\Primitiva;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Doctrine\ORM\EntityManager;
-use DateInterval;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class GetPrimitivaCommand extends ContainerAwareCommand
