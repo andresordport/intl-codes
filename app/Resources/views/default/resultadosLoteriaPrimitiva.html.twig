@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#Sin preocuparme cual es bola1, cual bola2, etc..<br>#}
+    {#{{ dump(resultados) }}<br>#}
+    {#Anotando cual es el orden en que sale cada numero, 'x' veces el 4, 'x' veces el 17, etc..<br>#}
+    {#{{ dump(resultadosOrdenada) }}<br>#}
+    {#Encoded array para d3JS<br>#}
+    {#{{ dump(arrayRepeticiones) }}<br>#}
+    <div class="graficoD3"></div>
+    {#{% if numeros[0] == "Duplicate" %}#}
+    {#<div class="row">#}
+    {#Ya está almacenado el resultado de este día.#}
+    {#</div>#}
+    {#<hr>#}
+    {#<br>#}
+    {#{% else %}#}
+    {#<div class="row">#}
+    {#<span>Resultado sin ordenar</span>#}
+
+    {#<div class="circle">{{ numeros[0][0] }} {{ numeros[0][1] }}</div>#}
+    {#<div class="bola">{{ numeros[0][2] }}</div>#}
+    {#<div class="bola">{{ numeros[0][3] }}</div>#}
+    {#<div class="bola">{{ numeros[0][4] }}</div>#}
+    {#<div class="bola">{{ numeros[0][5] }}</div>#}
+    {#<div class="bola">{{ numeros[0][6] }}</div>#}
+    {#<div class="bola">{{ numeros[0][7] }}</div>#}
+    {#<div class="circle">Complementario</div>#}
+    {#<div class="bola">{{ numeros[1][0] }}</div>#}
+    {#<div class="circle">Reintegro</div>#}
+    {#<div class="bola">{{ numeros[1][1] }}</div>#}
+    {#</div>#}
+    {#<br>#}
+    {#<div class="row">#}
+    {#<span>Resultado Ordenado</span>#}
+    {#<div class="circle">Combinación ganadora</div>#}
+    {#<div class="bola">{{ numeros[2][0] }}</div>#}
+    {#<div class="bola">{{ numeros[2][1] }}</div>#}
+    {#<div class="bola">{{ numeros[2][2] }}</div>#}
+    {#<div class="bola">{{ numeros[2][3] }}</div>#}
+    {#<div class="bola">{{ numeros[2][4] }}</div>#}
+    {#<div class="bola">{{ numeros[2][5] }}</div>#}
+    {#<div class="circle">Complementario</div>#}
+    {#<div class="bola">{{ numeros[3][0][0] }}</div>#}
+    {#<div class="circle">Reintegro</div>#}
+    {#<div class="bola">{{ numeros[3][1][0] }}</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .bola {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: black;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            background: #faea5e
+        }
+
+        .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: black;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            background: lightgray;
+        }
+    </style>
+    {#height: 100px;#}
+    {#width: 100px;#}
+    {#display: table-cell;#}
+    {#text-align: center;#}
+    {#vertical-align: middle;#}
+    {#border-radius: 50%;#}
+    {#background: yellow;#}
+{% endblock %}
+{% block javascripts %}
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
+        var margin = {top: 20, right: 20, bottom: 70, left: 40},
+                {#width = /*600*/{{ cols*20 }} -margin.left - margin.right,#}
+                width = 1050 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
+        // Parse the date / time
+        //        var	parseDate = d3.time.format("%Y-%m").parse;
+        var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+        var y = d3.scale.linear().range([height, 0]);
+        var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                {#.tickFormat(/*d3.time.format("%Y-%m")*/{{ cols }});#}
+                .ticks(/*d3.time.format("%Y-%m")*/10);
+        var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(10);
+        var svg = d3.select(".graficoD3")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .style("margin-left", "30px")
+                .append("g")
+                .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+        var data = {{ arrayRepeticiones|raw }}
+                data.forEach(function (d) {
+//                    d.value = d.value;
+//                    d.date = d.date;
+                });
+        x.domain(data.map(function (d) {
+            return d.value;
+        }));
+        y.domain([0, d3.max(data, function (d) {
+            return d.date;
+        })]);
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", "-.55em")
+//                .attr("transform", "rotate(-90)")
+                .attr("transform", "translate(20,20)");
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", "-3.71em")
+                .attr("dx", "3em")
+                .style("text-anchor", "end")
+                .text("#veces string");
+        svg.selectAll("bar")
+                .data(data)
+                .enter().append("rect")
+                .style("fill", "steelblue")
+//                    .attr("x", function(d) { return x(d.date); })
+                .attr("x", function (d) {
+                    return x(d.value);
+                })
+                .attr("width", x.rangeBand())
+//                    .attr("y", function(d) { return y(d.value); })
+                .attr("y", function (d) {
+                    return y(d.date);
+                })
+//                    .attr("height", function(d) { return height - y(d.value); });
+                .attr("height", function (d) {
+                    return height - y(d.date);
+                });
+    </script>
+{% endblock %}

@@ -59,7 +59,6 @@ class TermDocumentMatrixController extends Controller
             $keyValArray[] = array("value" => $explodedString[0], "date" => $explodedString[1]);
         }
         $content = json_encode($keyValArray);
-
         return $this->render('default/termDocumentMatrix.html.twig', ["data" => $content]);
 
     }
