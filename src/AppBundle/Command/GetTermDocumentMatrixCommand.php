@@ -49,7 +49,7 @@ class GetTermDocumentMatrixCommand extends ContainerAwareCommand
 //            var_dump($file->getRelativePathname());
 //        }
         $this->em = $this->getContainer()->get('doctrine')->getManager();
-        $process = new Process("R < " . $this->getContainer()->get('kernel')->getRootDir() . '/../web/Rfiles/ejemplo.R' . " --no-save");
+        $process = new Process("R < " . $this->getContainer()->get('kernel')->getRootDir() . '/../web/Rfiles/ejemplo.R' . " este es el texto de prueba para el text mining --no-save");
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);

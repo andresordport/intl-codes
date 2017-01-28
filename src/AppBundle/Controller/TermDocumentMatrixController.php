@@ -46,7 +46,7 @@ class TermDocumentMatrixController extends Controller
         echo("Este es el contenido de 'R command' para la frase: 'este es el texto de prueba para el text mining'");
         $explodedArray = explode("\n",$content);
         $keyValArray = array();
-
+//        var_dump($explodedArray);die();
         /**
          * la última posición del array es:
          * array (size=1)

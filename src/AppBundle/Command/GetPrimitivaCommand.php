@@ -37,32 +37,34 @@ class GetPrimitivaCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
-        $client = new Client();
-        $crawler = $client->request('GET', $this->url);
-        $nodeValues2 = $crawler->filter('.cuerpoRegionIzq')->each(function (Crawler $node) {
-            return $node->text();
-        });
-        $nodeValues = explode(" ", $nodeValues2[0]);
-
-        $bolaBD = new Primitiva();
-        $bolaBD->setBola1($nodeValues[2]);
-        $bolaBD->setBola2($nodeValues[3]);
-        $bolaBD->setBola3($nodeValues[4]);
-        $bolaBD->setBola4($nodeValues[5]);
-        $bolaBD->setBola5($nodeValues[6]);
-        $bolaBD->setBola6($nodeValues[7]);
-        $date = date("Y-m-d", strtotime('-1 day'));
-        $bolaBD->setCreatedAt(new \DateTime($date));
-        $nodeValues2 = $crawler->filter('.cuerpoRegionDerecha span')->each(function (Crawler $node) {
-            return $node->text();
-        });
-        $bolaBD->setComplementario($nodeValues2[0]);
-        $bolaBD->setReintegro($nodeValues2[1]);
-        try {
-            $this->em->persist($bolaBD);
-            $this->em->flush();
-        } catch (UniqueConstraintViolationException $e) {
-        }
+//        $this->em = $this->getContainer()->get('doctrine')->getManager();
+//        $client = new Client();
+//        $crawler = $client->request('GET', $this->url);
+//        $nodeValues2 = $crawler->filter('.cuerpoRegionIzq')->each(function (Crawler $node) {
+//            return $node->text();
+//        });
+//        $nodeValues = explode(" ", $nodeValues2[0]);
+//
+//        $bolaBD = new Primitiva();
+//        $bolaBD->setBola1($nodeValues[2]);
+//        $bolaBD->setBola2($nodeValues[3]);
+//        $bolaBD->setBola3($nodeValues[4]);
+//        $bolaBD->setBola4($nodeValues[5]);
+//        $bolaBD->setBola5($nodeValues[6]);
+//        $bolaBD->setBola6($nodeValues[7]);
+//        $date = date("Y-m-d", strtotime('-1 day'));
+//        $bolaBD->setCreatedAt(new \DateTime($date));
+//        $nodeValues2 = $crawler->filter('.cuerpoRegionDerecha span')->each(function (Crawler $node) {
+//            return $node->text();
+//        });
+//        $bolaBD->setComplementario($nodeValues2[0]);
+//        $bolaBD->setReintegro($nodeValues2[1]);
+//        try {
+//            $this->em->persist($bolaBD);
+//            $this->em->flush();
+//        } catch (UniqueConstraintViolationException $e) {
+//        }
+        $service = $this->getApplication()->getKernel()->getContainer()->get('PrimitivaService');
+        $numeros = $service->primitivaService();
     }
 }

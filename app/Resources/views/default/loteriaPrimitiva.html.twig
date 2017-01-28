@@ -2,26 +2,44 @@
 
 {% block body %}
     {#{{ dump(numeros) }}#}
-    {% if numeros[2] is defined %}
+    {% if numeros[0] == "Duplicate" %}
         <div class="row">
             Ya está almacenado el resultado de este día.
         </div>
         <hr>
         <br>
+    {% else %}
+        <div class="row">
+            <span>Resultado sin ordenar</span>
+
+            <div class="circle">{{ numeros[0][0] }} {{ numeros[0][1] }}</div>
+            <div class="bola">{{ numeros[0][2] }}</div>
+            <div class="bola">{{ numeros[0][3] }}</div>
+            <div class="bola">{{ numeros[0][4] }}</div>
+            <div class="bola">{{ numeros[0][5] }}</div>
+            <div class="bola">{{ numeros[0][6] }}</div>
+            <div class="bola">{{ numeros[0][7] }}</div>
+            <div class="circle">Complementario</div>
+            <div class="bola">{{ numeros[1][0] }}</div>
+            <div class="circle">Reintegro</div>
+            <div class="bola">{{ numeros[1][1] }}</div>
+        </div>
+        <br>
+        <div class="row">
+            <span>Resultado Ordenado</span>
+            <div class="circle">Combinación ganadora</div>
+            <div class="bola">{{ numeros[2][0] }}</div>
+            <div class="bola">{{ numeros[2][1] }}</div>
+            <div class="bola">{{ numeros[2][2] }}</div>
+            <div class="bola">{{ numeros[2][3] }}</div>
+            <div class="bola">{{ numeros[2][4] }}</div>
+            <div class="bola">{{ numeros[2][5] }}</div>
+            <div class="circle">Complementario</div>
+            <div class="bola">{{ numeros[3][0][0] }}</div>
+            <div class="circle">Reintegro</div>
+            <div class="bola">{{ numeros[3][1][0] }}</div>
+        </div>
     {% endif %}
-    <div class="row">
-        <div class="circle">{{ numeros[0][0] }} {{ numeros[0][1] }}</div>
-        <div class="bola">{{ numeros[0][2] }}</div>
-        <div class="bola">{{ numeros[0][3] }}</div>
-        <div class="bola">{{ numeros[0][4] }}</div>
-        <div class="bola">{{ numeros[0][5] }}</div>
-        <div class="bola">{{ numeros[0][6] }}</div>
-        <div class="bola">{{ numeros[0][7] }}</div>
-        <div class="circle">Complementario</div>
-        <div class="bola">{{ numeros[1][0] }}</div>
-        <div class="circle">Reintegro</div>
-        <div class="bola">{{ numeros[1][1] }}</div>
-    </div>
 {% endblock %}
 
 {% block stylesheets %}

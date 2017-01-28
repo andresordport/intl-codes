@@ -15,6 +15,7 @@ use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Primitiva;
+use AppBundle\Entity\PrimitivaOrdenada;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class PrimitivaService extends ContainerAwareCommand
@@ -45,6 +46,7 @@ class PrimitivaService extends ContainerAwareCommand
     {
         $client = new Client();
         $crawler = $client->request('GET', $this->url);
+        $crawler2 = $crawler;
         $nodeValues2 = $crawler->filter('.cuerpoRegionIzq')->each(function (Crawler $node) {
             return $node->text();
         });
@@ -74,10 +76,44 @@ class PrimitivaService extends ContainerAwareCommand
         $bolaBD->setReintegro($nodeValues2[1]);
         try {
             $this->em->persist($bolaBD);
+//            $this->em->flush();
+            $orderedNodeValues2 = $nodeValues2;
+            $orderedNodeValues = $nodeValues;
+            /** ahora cojemos las bolas ordenadas */
+            /** primero pulsamos sobre "más información" */
+            //select a link
+            $link = $crawler2->filter('div.masInfo > a')->link();
+            //click to follow link
+            $crawler2 = $client->click($link);
+            /** despues pulsamos sobre "ver por orden de aparición" */
+            //select a link
+            $link = $crawler2->filter('div.cuerpoRegion div.resultadoAnterior > a')->link();
+            //click to follow link
+            $crawler2 = $client->click($link);
+            $nodeValues2 = $crawler2->filter('#actMainNumbers')->each(function (Crawler $node) {
+                return $node->text();
+            });
+            $nodeValues = explode("\n", $nodeValues2[0]);
+            $bolaBD2 = new PrimitivaOrdenada();
+            $bolaBD2->setBola1($nodeValues[0]);
+            $bolaBD2->setBola2($nodeValues[1]);
+            $bolaBD2->setBola3($nodeValues[2]);
+            $bolaBD2->setBola4($nodeValues[3]);
+            $bolaBD2->setBola5($nodeValues[4]);
+            $bolaBD2->setBola6($nodeValues[5]);
+            $nodeValues2[0] = $crawler2->filter('.cuerpoRegionMed span')->each(function (Crawler $node) {
+                return $node->text();
+            });
+            $nodeValues2[1] = $crawler2->filter('.cuerpoRegionDerecha span')->each(function (Crawler $node) {
+                return $node->text();
+            });
+            $bolaBD2->setComplementario($nodeValues2[0][0]);
+            $bolaBD2->setReintegro($nodeValues2[1][0]);
+            $this->em->persist($bolaBD2);
             $this->em->flush();
-            return [$nodeValues, $nodeValues2];
+            return [$orderedNodeValues, $orderedNodeValues2, $nodeValues, $nodeValues2];
         } catch (UniqueConstraintViolationException $e) {
-            return [$nodeValues, $nodeValues2, "Duplicate"];
+            return ["Duplicate"];
         }
     }
 }
