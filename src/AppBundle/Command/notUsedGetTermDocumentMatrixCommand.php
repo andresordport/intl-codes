@@ -15,7 +15,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 //
 //use Symfony\Component\Finder\Finder;
 
-class GetTermDocumentMatrixCommand extends ContainerAwareCommand
+class notUsedGetTermDocumentMatrixCommand extends ContainerAwareCommand
 {
     protected $em;
     protected $contador = false;
@@ -25,7 +25,7 @@ class GetTermDocumentMatrixCommand extends ContainerAwareCommand
     {
         $this
             // the name of the command (the part after "bin/console")
-            ->setName('app:get-textTermDocumentMatrix')
+            ->setName('app:get-notUsedTextTermDocumentMatrix')
             // the short description shown while running "php bin/console list"
             ->setDescription('Gets the Term Document Matrix from an introduced text.')
             // the full command description shown when running the command with

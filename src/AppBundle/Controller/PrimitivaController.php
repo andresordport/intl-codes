@@ -33,42 +33,30 @@ class PrimitivaController extends Controller
     public function resultadosLoteriaPrimitiva(Request $request)
     {
 //        $em = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Primitiva');
-        $repositoryOrdenada = $this->getDoctrine()->getRepository('AppBundle:PrimitivaOrdenada');
-
-        $resultados = $repository->findBy([], ['createdAt' => 'ASC']);
-        $resultadosOrdenada = $repositoryOrdenada->findBy([], ['createdAt' => 'ASC']);
-        $array = array();
-        $arrayRepeticiones = array();
-        $arrayOrdenada = array();
-        foreach ($resultados as $result) {
-            /** Para cada bola, si ha salido alguna vez ese mismo numero sumamos una ocasión mas */
-            for ($i = 1; $i < 7; $i++) {
-                $funget = "getBola$i";
-                $pos = $result->$funget();
-                if (isset($array[$pos]) && isset($array[$pos]) >0) {
-                    $array[$pos] = array("value" => $pos, "date" => $array[$pos]["date"]+1);
-                } else {
-                    $array[$pos] = array("value" => $pos, "date" => 1);
-                }
-            }
-            $pos = $result->getComplementario();
-            if (isset($array[$pos]) && isset($array[$pos]) >0) {
-                $array[$pos] = array("value" => $pos, "date" => $array[$pos]["date"] + 1);
-            } else {
-                $array[$pos] = array("value" => $pos, "date" => 1);
-            }
-        }
-        sort($array);
-        foreach ($array as $result) {
-            $arrayRepeticiones[] = $result;
-        }
-//        var_dump(($array));
+        $totalResultsService = $this->container->get('TotalResultsService');
+        $totalPerMonthService = $this->container->get('TotalPerMonthService');
+        $resultadosTotalResults = $totalResultsService->totalResultsService();
+        $resultadosTotalPerMonth = $totalPerMonthService->totalPerMonthService();
+//        $month = date_format(new \Datetime('now'),'Y/m');
+//        $primero = $resultadosTotalPerMonth[$month];
+//        $month1 = new \Datetime('now');
+//        $month1 = $month1->modify('-1 month');
+//        $monthF = date_format($month1,'Y/m');
+//        $segundo = $resultadosTotalPerMonth[$monthF];
+//        $month1 = $month1->modify('-1 month');
+//        $monthF = date_format($month1,'Y/m');
+//        $tercero = $resultadosTotalPerMonth[$monthF];
+//        var_dump(json_encode($resultadosTotalResults["arrayRepeticiones"]));
+//        var_dump(json_encode($primero));
 //        die();
-        return $this->render('default/resultadosLoteriaPrimitiva.html.twig', ["resultados" => $resultados,
-            "resultadosOrdenada" => $resultadosOrdenada, "arrayRepeticiones" => json_encode($arrayRepeticiones)]);
+        return $this->render('default/resultadosLoteriaPrimitiva.html.twig', [
+            /*"resultadosOrdenada" => $resultadosTotalResults["resultadosOrdenada"],*/
+            "arrayRepeticiones" => json_encode($resultadosTotalResults["arrayRepeticiones"]),
+            "arrayPorMes1" => json_encode($resultadosTotalPerMonth["arrayRepeticionesPrimero"]),
+            "arrayPorMes2" => json_encode($resultadosTotalPerMonth["arrayRepeticionesSegundo"]),
+            "arrayPorMes3" => json_encode($resultadosTotalPerMonth["arrayRepeticionesTercero"])
+        ]);
     }
-
 //    /**
 //     * @Route("/loteriaPrimitivaCronJob", name="loteriaPrimitivaCronJob")
 //     */

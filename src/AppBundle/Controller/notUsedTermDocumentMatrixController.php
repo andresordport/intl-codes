@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Console\Output\StreamOutput;
 
-class TermDocumentMatrixController extends Controller
+class notUsedTermDocumentMatrixController extends Controller
 {
 //    /**
 //     * @Route("/loteriaPrimitiva", name="loteriaPrimitiva")
@@ -27,7 +27,7 @@ class TermDocumentMatrixController extends Controller
 //    }
 
     /**
-     * @Route("/termDocumentMatrixCronJob", name="termDocumentMatrixCronJob")
+     * @Route("/notUsedTermDocumentMatrixCronJob", name="termDocumentMatrixCronJob")
      */
     public function termDocumentMatrixCronJobAction(Request $request)
     {
@@ -36,7 +36,7 @@ class TermDocumentMatrixController extends Controller
         $application->setAutoExit(false);
 
         $input = new ArrayInput(array(
-            'command' => 'app:get-textTermDocumentMatrix'
+            'command' => 'app:get-notUsedTextTermDocumentMatrix'
         ));
 //        // You can use NullOutput() if you don't need the output
         $output = new BufferedOutput();

@@ -1,13 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {#Sin preocuparme cual es bola1, cual bola2, etc..<br>#}
-    {#{{ dump(resultados) }}<br>#}
     {#Anotando cual es el orden en que sale cada numero, 'x' veces el 4, 'x' veces el 17, etc..<br>#}
     {#{{ dump(resultadosOrdenada) }}<br>#}
     {#Encoded array para d3JS<br>#}
     {#{{ dump(arrayRepeticiones) }}<br>#}
-    <div class="graficoD3"></div>
+    <div class="container-fluid">
+        <div class="col-md-8 col-lg-8 col-sm-8">
+            <div class="row">
+                <p>Total:</p>
+
+                <div class="graficoD3-1"></div>
+            </div>
+
+            <div class="row">
+                <p>{{ 'now'|date("Y/m") }}</p>
+
+                <div class="graficoD3-2"></div>
+            </div>
+
+            <div class="row">
+                <p>{{ 'now'|date_modify("-1 month")|date("Y/m") }}</p>
+
+                <div class="graficoD3-3"></div>
+            </div>
+
+            <div class="row">
+                <p>{{ 'now'|date_modify("-2 month")|date("Y/m") }}</p>
+
+                <div class="graficoD3-4"></div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-12">
+            <p>Hueco para mostrar los ultimos resultados del mes:</p>
+        </div>
+    </div>
     {#{% if numeros[0] == "Duplicate" %}#}
     {#<div class="row">#}
     {#Ya está almacenado el resultado de este día.#}
@@ -49,38 +76,6 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <style>
-        .bola {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 18px;
-            color: black;
-            display: table-cell;
-            text-align: center;
-            vertical-align: middle;
-            background: #faea5e
-        }
-
-        .circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 18px;
-            color: black;
-            display: table-cell;
-            text-align: center;
-            vertical-align: middle;
-            background: lightgray;
-        }
-    </style>
-    {#height: 100px;#}
-    {#width: 100px;#}
-    {#display: table-cell;#}
-    {#text-align: center;#}
-    {#vertical-align: middle;#}
-    {#border-radius: 50%;#}
-    {#background: yellow;#}
 {% endblock %}
 {% block javascripts %}
     <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -102,7 +97,7 @@
                 .scale(y)
                 .orient("left")
                 .ticks(10);
-        var svg = d3.select(".graficoD3")
+        var svg = d3.select(".graficoD3-1")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
@@ -115,6 +110,28 @@
 //                    d.value = d.value;
 //                    d.date = d.date;
                 });
+        {#var svg3 = d3.select(".graficoD3-3")#}
+        {#.append("svg")#}
+        {#.attr("width", width + margin.left + margin.right)#}
+        {#.attr("height", height + margin.top + margin.bottom)#}
+        {#.style("margin-left", "30px")#}
+        {#.append("g")#}
+        {#.attr("transform",#}
+        {#"translate(" + margin.left + "," + margin.top + ")");#}
+        {#var data3 = {{ arrayRepeticiones|raw }}#}
+        {#data.forEach(function (d) {#}
+        {#});#}
+        {#var svg4 = d3.select(".graficoD3-4")#}
+        {#.append("svg")#}
+        {#.attr("width", width + margin.left + margin.right)#}
+        {#.attr("height", height + margin.top + margin.bottom)#}
+        {#.style("margin-left", "30px")#}
+        {#.append("g")#}
+        {#.attr("transform",#}
+        {#"translate(" + margin.left + "," + margin.top + ")");#}
+        {#var data4 = {{ arrayRepeticiones|raw }}#}
+        {#data.forEach(function (d) {#}
+        {#});#}
         x.domain(data.map(function (d) {
             return d.value;
         }));
@@ -143,6 +160,248 @@
                 .text("#veces string");
         svg.selectAll("bar")
                 .data(data)
+                .enter().append("rect")
+                .style("fill", "#dd4444")
+//                    .attr("x", function(d) { return x(d.date); })
+                .attr("x", function (d) {
+                    return x(d.value);
+                })
+                .attr("width", x.rangeBand())
+//                    .attr("y", function(d) { return y(d.value); })
+                .attr("y", function (d) {
+                    return y(d.date);
+                })
+//                    .attr("height", function(d) { return height - y(d.value); });
+                .attr("height", function (d) {
+                    return height - y(d.date);
+                });
+
+        /**
+         *
+         *
+         *
+         * segundo grafico
+         *
+         *
+         *
+         */
+        margin = {top: 20, right: 20, bottom: 70, left: 40},
+                width = 1050 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
+        // Parse the date / time
+        //        var	parseDate = d3.time.format("%Y-%m").parse;
+        x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+        y = d3.scale.linear().range([height, 0]);
+        xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                {#.tickFormat(/*d3.time.format("%Y-%m")*/{{ cols }});#}
+                .ticks(/*d3.time.format("%Y-%m")*/10);
+        yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(10);
+        svg = d3.select(".graficoD3-2")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .style("margin-left", "30px")
+                .append("g")
+                .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+        var data2 = {{ arrayPorMes1|raw }}
+                data2.forEach(function (d) {
+//                    d.value = d.value;
+//                    d.date = d.date;
+                });
+        x.domain(data2.map(function (d) {
+            return d.value;
+        }));
+        y.domain([0, d3.max(data2, function (d) {
+            return d.date;
+        })]);
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", "-.55em")
+//                .attr("transform", "rotate(-90)")
+                .attr("transform", "translate(20,20)");
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", "-3.71em")
+                .attr("dx", "3em")
+                .style("text-anchor", "end")
+                .text("#veces string");
+        svg.selectAll("bar")
+                .data(data2)
+                .enter().append("rect")
+                .style("fill", "steelblue")
+//                    .attr("x", function(d) { return x(d.date); })
+                .attr("x", function (d) {
+                    return x(d.value);
+                })
+                .attr("width", x.rangeBand())
+//                    .attr("y", function(d) { return y(d.value); })
+                .attr("y", function (d) {
+                    return y(d.date);
+                })
+//                    .attr("height", function(d) { return height - y(d.value); });
+                .attr("height", function (d) {
+                    return height - y(d.date);
+                });
+        /**
+         *
+         *
+         *
+         * Tercer grafico
+         *
+         *
+         *
+         */
+        margin = {top: 20, right: 20, bottom: 70, left: 40},
+                width = 1050 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
+        // Parse the date / time
+        //        var	parseDate = d3.time.format("%Y-%m").parse;
+        x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+        y = d3.scale.linear().range([height, 0]);
+        xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                .ticks(/*d3.time.format("%Y-%m")*/10);
+        yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(10);
+        svg = d3.select(".graficoD3-3")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .style("margin-left", "30px")
+                .append("g")
+                .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+        var data3 = {{ arrayPorMes2|raw }}
+                data3.forEach(function (d) {
+//                    d.value = d.value;
+//                    d.date = d.date;
+                });
+        x.domain(data3.map(function (d) {
+            return d.value;
+        }));
+        y.domain([0, d3.max(data3, function (d) {
+            return d.date;
+        })]);
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", "-.55em")
+//                .attr("transform", "rotate(-90)")
+                .attr("transform", "translate(20,20)");
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", "-3.71em")
+                .attr("dx", "3em")
+                .style("text-anchor", "end")
+                .text("#veces string");
+        svg.selectAll("bar")
+                .data(data3)
+                .enter().append("rect")
+                .style("fill", "steelblue")
+//                    .attr("x", function(d) { return x(d.date); })
+                .attr("x", function (d) {
+                    return x(d.value);
+                })
+                .attr("width", x.rangeBand())
+//                    .attr("y", function(d) { return y(d.value); })
+                .attr("y", function (d) {
+                    return y(d.date);
+                })
+//                    .attr("height", function(d) { return height - y(d.value); });
+                .attr("height", function (d) {
+                    return height - y(d.date);
+                });
+        /**
+         *
+         *
+         *
+         * Cuarto grafico
+         *
+         *
+         *
+         */
+        margin = {top: 20, right: 20, bottom: 70, left: 40},
+                width = 1050 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
+        // Parse the date / time
+        //        var	parseDate = d3.time.format("%Y-%m").parse;
+        x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+        y = d3.scale.linear().range([height, 0]);
+        xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                .ticks(/*d3.time.format("%Y-%m")*/10);
+        yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(10);
+        svg = d3.select(".graficoD3-4")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .style("margin-left", "30px")
+                .append("g")
+                .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+        var data4 = {{ arrayPorMes3|raw }}
+                data4.forEach(function (d) {
+//                    d.value = d.value;
+//                    d.date = d.date;
+                });
+        x.domain(data4.map(function (d) {
+            return d.value;
+        }));
+        y.domain([0, d3.max(data4, function (d) {
+            return d.date;
+        })]);
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", "-.55em")
+//                .attr("transform", "rotate(-90)")
+                .attr("transform", "translate(20,20)");
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", "-3.71em")
+                .attr("dx", "3em")
+                .style("text-anchor", "end")
+                .text("#veces string");
+        svg.selectAll("bar")
+                .data(data4)
                 .enter().append("rect")
                 .style("fill", "steelblue")
 //                    .attr("x", function(d) { return x(d.date); })

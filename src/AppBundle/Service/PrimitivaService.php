@@ -67,8 +67,8 @@ class PrimitivaService extends ContainerAwareCommand
         $bolaBD->setBola4($nodeValues[5]);
         $bolaBD->setBola5($nodeValues[6]);
         $bolaBD->setBola6($nodeValues[7]);
-//        $date = date("Y-m-d", strtotime('-1 day'));
-//        $bolaBD->setCreatedAt(new \DateTime($date));
+        $date = date("Y-m-d", strtotime('-1 day'));
+        $bolaBD->setCreatedAt(new \DateTime($date));
         $nodeValues2 = $crawler->filter('.cuerpoRegionDerecha span')->each(function (Crawler $node) {
             return $node->text();
         });
@@ -101,6 +101,7 @@ class PrimitivaService extends ContainerAwareCommand
             $bolaBD2->setBola4($nodeValues[3]);
             $bolaBD2->setBola5($nodeValues[4]);
             $bolaBD2->setBola6($nodeValues[5]);
+            $bolaBD2->setCreatedAt(new \DateTime($date));
             $nodeValues2[0] = $crawler2->filter('.cuerpoRegionMed span')->each(function (Crawler $node) {
                 return $node->text();
             });
