@@ -16,6 +16,8 @@
 /web/bundles/
 .idea/*
 .idea/
+./idea/
+./idea/*
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
