@@ -29,7 +29,7 @@ class IndexController extends Controller
      */
     public function holaAction(Request $request)
     {
-        var_dump("capado temporalmente2");die();
+        var_dump("capado temporalmente3");die();
         $holaService = $this->container->get('HolaService');
         $holaService->holaService();
         // replace this example code with whatever you need
