@@ -10,6 +10,9 @@ services:
     HolaService:
         class: AppBundle\Service\HolaService
         arguments: [    ]
+    SecondHolaService:
+        class: AppBundle\Service\SecondHolaService
+        arguments: ["@HolaService"]
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:

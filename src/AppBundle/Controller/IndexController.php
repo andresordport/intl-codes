@@ -37,6 +37,20 @@ class IndexController extends Controller
         ]);
     }
 
+
+    /**
+     * @Route("/secondHola", name="secondHola")
+     */
+    public function secondHolaAction(Request $request)
+    {
+        $secondHolaService = $this->container->get('SecondHolaService');
+        $secondHolaService->secondHolaService();
+        // replace this example code with whatever you need
+        return $this->render('default/index.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
+        ]);
+    }
+
     /**
      * @Route("/intl", name="intl")
      */

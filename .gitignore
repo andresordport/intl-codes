@@ -16,6 +16,7 @@
 /web/bundles/
 .idea/*
 .idea/
+.idea
 ./idea/
 ./idea/*
 # User-specific stuff:

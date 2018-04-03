@@ -12,6 +12,6 @@ class HolaService // extends Controller
     public function holaService()
     {
         // replace this example code with whatever you need
-        var_dump("hola desde el service");die();
+        var_dump("hola desde el service HolaService");die();
     }
 }
