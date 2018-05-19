@@ -12,7 +12,7 @@ class SecondHolaService // extends Controller
 {
     public $injectedService;
 
-    public function __construct(\AppBundle\Service\HolaService $service){
+    public function __construct(HolaService $service){
         $this->injectedService = $service;
     }
 

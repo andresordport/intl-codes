@@ -39,7 +39,17 @@ class IndexController extends Controller
 
 
     /**
-     * @Route("/secondHola", name="secondHola")
+     * Para pasar parametros opcionales en symfony, se puede hacer de 2 formas:
+     * 1º : Definiendo un valor por defecto
+     * @Route("/secondHola/{id}", name="secondHola", defaults={"id" = ""})
+     * o
+     * 2º: Definiendo 2 rutas, una con el parametro y otra sin el
+     * @Route("/secondHola", name="secondHolaWithParams")
+     * @Route("/secondHola/{id}", name="secondHola")
+     */
+
+    /**
+     * @Route("/secondHola/{id}", name="secondHolaWithParams", defaults={"id" = ""})
      */
     public function secondHolaAction(Request $request)
     {
